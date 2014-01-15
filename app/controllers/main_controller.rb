@@ -14,7 +14,7 @@ class MainController < UIViewController
     @capture_button = UIButton.buttonWithType(UIButtonTypeCustom)
     @capture_button.frame = [[50,260],[221,53]]
     @capture_button.setBackgroundImage(capture_button_image, forState:UIControlStateNormal)
-    @capture_button.addTarget(self, action: "open_button", forControlEvents: UIControlEventTouchUpInside)
+    @capture_button.addTarget(self, action: "open_capture", forControlEvents: UIControlEventTouchUpInside)
 
     @near_button = UIButton.buttonWithType(UIButtonTypeCustom)
     @near_button.frame = [[50,320],[221,53]]
@@ -45,6 +45,10 @@ class MainController < UIViewController
       cancelButtonTitle: "ok",
       otherButtonTitles:nil)
     @view_button.show
+  end
+
+  def open_capture
+    self.navigationController.pushViewController((CaptureController.alloc.init), animated: true)
   end
 
 end
