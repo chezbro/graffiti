@@ -18,4 +18,5 @@ Motion::Project::App.setup do |app|
   app.identifier = "58DH99VCDR.com.armontdevelopment.graffiti"
 
   app.provisioning_profile = "/Users/williamcrouse/Desktop/Will_Graffiti.mobileprovision"
+
 end
