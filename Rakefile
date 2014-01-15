@@ -12,4 +12,9 @@ end
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Graffiti'
+  app.fonts = ["OpenSans.ttf"]
+  # Bundle ID #: com.armontdevelopment.graffiti
+  # Identifier 58DH99VCDR.com.armont.graffiti
+
+
 end
