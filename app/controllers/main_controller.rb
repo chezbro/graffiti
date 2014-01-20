@@ -48,7 +48,18 @@ class MainController < UIViewController
   end
 
   def open_capture
-    self.navigationController.pushViewController((CaptureController.alloc.init), animated: true)
+    BW::Device.camera.send(:rear).picture(media_types: [:image]) do |result|
+      image_view = build_image_view(result[:original_image])
+      self.view.addSubview(image_view)
+      #imageData = UIImage.UIImageJPEGRepresentation(image_view.image, 1)
+    end
+  end
+
+  def build_image_view(image)
+    image_view = UIImageView.alloc.initWithImage(image)
+    image_view.frame = [CGPointZero, self.view.frame.size]
+    image_view.center = [self.view.frame.size.width / 2, self.view.frame.size.height / 2]
+    image_view
   end
 
 end
