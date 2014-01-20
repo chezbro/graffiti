@@ -13,10 +13,10 @@ Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Graffiti'
 
-  app.codesign_certificate = "iPhone Developer: William Crouse (SRJHVQEG5X)"
+  app.codesign_certificate = ENV["GRAFFITI_CODESIGN_CERTIFICATE"]
 
-  app.identifier = "58DH99VCDR.com.armontdevelopment.graffiti"
+  app.identifier = ENV["GRAFFITI_APP_IDENTIFIER"]
 
-  app.provisioning_profile = "/Users/williamcrouse/Desktop/Will_Graffiti.mobileprovision"
+  app.provisioning_profile = ENV["GRAFFITI_APP_PROVISIONING_PROFILE"]
 
 end
