@@ -19,7 +19,7 @@ class MainController < UIViewController
     @near_button = UIButton.buttonWithType(UIButtonTypeCustom)
     @near_button.frame = [[50,320],[221,53]]
     @near_button.setBackgroundImage(near_button_image, forState:UIControlStateNormal)
-    @near_button.addTarget(self, action: "open_button", forControlEvents: UIControlEventTouchUpInside)
+    @near_button.addTarget(self, action: "add_image_to_server", forControlEvents: UIControlEventTouchUpInside)
 
     @popular_button = UIButton.buttonWithType(UIButtonTypeCustom)
     @popular_button.frame = [[50,380],[221,53]]
@@ -45,6 +45,17 @@ class MainController < UIViewController
       cancelButtonTitle: "ok",
       otherButtonTitles:nil)
     @view_button.show
+  end
+
+  def add_image_to_server
+    @test_image = UIImage.imageNamed("wall.jpg")
+    imageData = UIImageJPEGRepresentation(@test_image, 1)
+    encodedData = [imageData].pack("m0")
+    data["rb_image"] = encodedData
+    BW::HTTP.post("http://localhost:3000/tags", {payload: data}) do |response|
+      if response.ok?
+        end
+      end
   end
 
   def open_capture
