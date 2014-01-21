@@ -13,10 +13,14 @@ Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Graffiti'
 
-  app.codesign_certificate = ENV["GRAFFITI_CODESIGN_CERTIFICATE"]
+  app.codesign_certificate = ENV['GRAFFITI_CODESIGN_CERTIFICATE']
 
-  app.identifier = ENV["GRAFFITI_APP_IDENTIFIER"]
+  app.identifier = ENV['GRAFFITI_APP_IDENTIFIER']
 
-  app.provisioning_profile = ENV["GRAFFITI_APP_PROVISIONING_PROFILE"]
+  app.provisioning_profile = ENV['GRAFFITI_APP_PROVISIONING_PROFILE']
+
+  app.pods do
+    pod 'AFNetworking'
+  end
 
 end
