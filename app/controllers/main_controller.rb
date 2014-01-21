@@ -48,14 +48,31 @@ class MainController < UIViewController
   end
 
   def add_image_to_server
-    @test_image = UIImage.imageNamed("wall.jpg")
-    imageData = UIImageJPEGRepresentation(@test_image, 1)
-    encodedData = [imageData].pack("m0")
-    data["rb_image"] = encodedData
-    BW::HTTP.post("http://localhost:3000/tags", {payload: data}) do |response|
-      if response.ok?
-        end
-      end
+    data = {task: 1, message: "message", latitude: 1, longitude: 1}
+
+    client = AFHTTPClient.alloc.initWithBaseURL(NSURL.URLWithString("http://localhost:3000"))
+    request = client.multipartFormRequestWithMethod('POST', path:"tags", parameters:data, constructingBodyWithBlock:lambda{ |form_data|
+       @test_image = UIImage.imageNamed("wall.jpg")
+      imageData = UIImageJPEGRepresentation(@test_image, 1)
+      form_data.appendPartWithFileData(imageData, name:'new_image', fileName:'wall.jpg', mimeType:'image/jpg')
+    })
+
+    operation = AFJSONRequestOperation.alloc.initWithRequest(request)
+    operation.setCompletionBlockWithSuccess(lambda { |operation, responseObject| puts 'all done!'},
+                                            failure: lambda { |operation, error| puts 'error' })
+    operation.start
+
+
+    # @test_image = UIImage.imageNamed("wall.jpg")
+    # imageData = UIImageJPEGRepresentation(@test_image, 1)
+
+
+    # encodedData = [imageData].pack("m0")
+    # data["rb_image"] = encodedData
+    # BW::HTTP.post("http://localhost:3000/tags", {payload: data}) do |response|
+    #   if response.ok?
+    #     end
+    #   end
   end
 
   def open_capture
