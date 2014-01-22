@@ -48,24 +48,36 @@ class MainController < UIViewController
   end
 
   def add_image_to_server
-    data = {task: 1, message: "message", latitude: 1, longitude: 1}
 
-    client = AFHTTPClient.alloc.initWithBaseURL(NSURL.URLWithString("http://localhost:3000"))
-    request = client.multipartFormRequestWithMethod('POST', path:"tags", parameters:data, constructingBodyWithBlock:lambda{ |form_data|
-       @test_image = UIImage.imageNamed("wall.jpg")
-      imageData = UIImageJPEGRepresentation(@test_image, 1)
-      form_data.appendPartWithFileData(imageData, name:'new_image', fileName:'wall.jpg', mimeType:'image/jpg')
-    })
+    @test_image = UIImage.imageNamed("wall.jpg")
+    imageData = UIImageJPEGRepresentation(@test_image, 1)
 
-    operation = AFJSONRequestOperation.alloc.initWithRequest(request)
-    operation.setCompletionBlockWithSuccess(lambda { |operation, responseObject| puts 'all done!'},
-                                            failure: lambda { |operation, error| puts 'error' })
-    operation.start
+    client = AFMotion::Client.build("http://localhost:3000/") do
+      header "Accept", "application/json"
+      response_serializer :json
+    end
+
+    client.multipart_post("tags") do |result, form_data|
+      if form_data
+        form_data.appendPartWithFileData(imageData, name: "rm_image", fileName:"wall.jpg", mimeType:"wall.jpg")
+      elsif result.success?
+      end
+    end
 
 
-    # @test_image = UIImage.imageNamed("wall.jpg")
-    # imageData = UIImageJPEGRepresentation(@test_image, 1)
+    # data = {task: 1, message: "message", latitude: 1, longitude: 1}
 
+    # client = AFHTTPClient.alloc.initWithBaseURL(NSURL.URLWithString("http://localhost:3000"))
+    # request = client.multipartFormRequestWithMethod('POST', path:"tags", parameters:data, constructingBodyWithBlock:lambda{ |form_data|
+    #    @test_image = UIImage.imageNamed("wall.jpg")
+    #   imageData = UIImageJPEGRepresentation(@test_image, 1)
+    #   form_data.appendPartWithFileData(imageData, name:'new_image', fileName:'wall.jpg', mimeType:'image/jpg')
+    # })
+
+    # operation = AFJSONRequestOperation.alloc.initWithRequest(request)
+    # operation.setCompletionBlockWithSuccess(lambda { |operation, responseObject| puts 'all done!'},
+    #                                         failure: lambda { |operation, error| puts 'error' })
+    # operation.start
 
     # encodedData = [imageData].pack("m0")
     # data["rb_image"] = encodedData
