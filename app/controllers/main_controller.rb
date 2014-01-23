@@ -47,9 +47,9 @@ class MainController < UIViewController
     @view_button.show
   end
 
-  def add_image_to_server
+  def add_image_to_server(image)
 
-    @test_image = UIImage.imageNamed("wall.jpg")
+    @test_image = UIImage.imageNamed(@image)
     imageData = UIImageJPEGRepresentation(@test_image, 1)
 
     client = AFMotion::Client.build("http://localhost:3000/") do
@@ -89,17 +89,17 @@ class MainController < UIViewController
 
   def open_capture
     BW::Device.camera.send(:rear).picture(media_types: [:image]) do |result|
-      image_view = build_image_view(result[:original_image])
-      self.view.addSubview(image_view)
+      @image_view = result[:original_image])
+      add_image_to_server(@image_view)
       #imageData = UIImage.UIImageJPEGRepresentation(image_view.image, 1)
     end
   end
 
-  def build_image_view(image)
-    image_view = UIImageView.alloc.initWithImage(image)
-    image_view.frame = [CGPointZero, self.view.frame.size]
-    image_view.center = [self.view.frame.size.width / 2, self.view.frame.size.height / 2]
-    image_view
-  end
+  # def build_image_view(image)
+  #   image_view = UIImageView.alloc.initWithImage(image)
+  #   image_view.frame = [CGPointZero, self.view.frame.size]
+  #   image_view.center = [self.view.frame.size.width / 2, self.view.frame.size.height / 2]
+  #   image_view
+  # end
 
 end
