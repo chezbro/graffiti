@@ -59,7 +59,7 @@ class MainController < UIViewController
 
     client.multipart_post("tags") do |result, form_data|
       if form_data
-        form_data.appendPartWithFileData(imageData, name: "rm_image", fileName:"wall.jpg", mimeType:"wall.jpg")
+        form_data.appendPartWithFileData(imageData, name: "rm_image", fileName:"wall.jpg", mimeType:"image/jpg")
       elsif result.success?
       end
     end
