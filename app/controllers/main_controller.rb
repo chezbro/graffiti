@@ -47,10 +47,19 @@ class MainController < UIViewController
     @view_button.show
   end
 
+
+  def open_capture
+    BW::Device.camera.send(:rear).picture(media_types: [:image]) do |result|
+      @image = result[:original_image]
+      add_image_to_server(@image)
+      #imageData = UIImage.UIImageJPEGRepresentation(image_view.image, 1)
+    end
+  end
+
   def add_image_to_server(image)
 
-    @test_image = UIImage.imageNamed(@image)
-    imageData = UIImageJPEGRepresentation(@test_image, 1)
+    # @test_image = UIImage.imageNamed("wall.jpg")
+    imageData = UIImageJPEGRepresentation(image, 1)
 
     client = AFMotion::Client.build("http://localhost:3000/") do
       header "Accept", "application/json"
@@ -59,7 +68,7 @@ class MainController < UIViewController
 
     client.multipart_post("tags") do |result, form_data|
       if form_data
-        form_data.appendPartWithFileData(imageData, name: "rm_image", fileName:"wall.jpg", mimeType:"image/jpg")
+        form_data.appendPartWithFileData(imageData, name: "rm_image", fileName:"image.jpg", mimeType:"image/jpg")
       elsif result.success?
       end
     end
@@ -86,15 +95,6 @@ class MainController < UIViewController
     #     end
     #   end
   end
-
-  def open_capture
-    BW::Device.camera.send(:rear).picture(media_types: [:image]) do |result|
-      @image_view = result[:original_image])
-      add_image_to_server(@image_view)
-      #imageData = UIImage.UIImageJPEGRepresentation(image_view.image, 1)
-    end
-  end
-
   # def build_image_view(image)
   #   image_view = UIImageView.alloc.initWithImage(image)
   #   image_view.frame = [CGPointZero, self.view.frame.size]
